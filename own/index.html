@@ -10,12 +10,88 @@
             media="screen"
             href="styles.css"
         />
+        
+        <script type="text/javascript" src="main.js"></script>
     </head>
     <body>
         <div id="root" class="todo-app__root">
             <header class="todo-app__header">
                 <h1 class="todo-app__title">todos</h1>
             </header>
+        
+            <section class="todo-app__main">
+
+                <div>
+                    <input type="text" class="todo-app__input" id="InputEnterID" name="input" placeholder="What needs to be done?"/>
+                </div>
+                <div>
+                    <ul class="todo-app__list" id="todo-liat">
+                        
+                        <!--
+                        <li class="todo-app__item">
+                            
+                            <div class="todo-app__checkbox">
+                                <input type="checkbox" id="myCheck" onclick="myFunction()">
+
+                                <label for="myCheck" id="testlabel"></label>
+                                <script>
+                                    function myFunction() {
+                                        var checkBox = document.getElementById("myCheck");
+                                        if(checkBox.checked == true){
+                                            alert("Hello World");
+                                        }else{
+                                            alert("Noting");
+                                        }
+                                    }
+                                </script>
+                            </div>
+                            
+                            <h1 class="todo-app__item-detail">This is the first TODO</h1>
+                            <img src="./img/x.png" alt="" class="todo-app__item-x">   
+                        </li>
+                        -->
+                    </ul>
+                </div>
+            </section>
+            <script>
+                var InputItemArray =[];
+                var CompleteHW = [];
+                var NoCompleteHW = [];
+                InputNameandNumber();
+            </script>
+            <!--
+            <footer class="todo-app__footer" id="todo-footer">
+                <div class="todo-app__total" id="leftNumber"></div>
+                <ul class="todo-app__view-buttons">
+                </ul>
+                <script>
+                    //Set the array that the homework name can input it
+                    var InputItemArray =[];
+                    var CompleteHW = [];
+                    var NoCompleteHW = [];
+                    InputNameandNumber();
+                    All_Active_Completed();
+                </script>
+                <div class="todo-app__clean">
+                    <script>
+                        const ClearCompleteText = document.createTextNode("Clear Complete")
+                        const ClearComplete = document.createElement("BUTTON");
+                        //ClearComplete.setAttribute("class","CCText"); set in the class of ".todo-app__clean"
+                        ClearComplete.appendChild(ClearCompleteText);
+                        ClearComplete.addEventListener("click",() => {
+                            deleteCompleteHomework(CompleteHW);
+                        },false);
+                        document.querySelector(".todo-app__clean").appendChild(ClearComplete);
+                        
+                    </script>
+                </div>
+                <div>
+                    <button onclick="TestNumber()">
+                        Try it
+                    </button>
+                </div>
+            </footer>
+            -->
         </div>
         <script src="main.js"></script>
     </body>
