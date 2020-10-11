@@ -1,3 +1,30 @@
+//Input the homework name set them into the number of leaved and the row
+function InputNameandNumber(){
+    const input = document.querySelector(".todo-app__input");
+    
+    var homeworkName;
+    //document.getElementById("leftNumber").innerHTML = "0 left";
+    let tempenternumber = 0;
+    input.addEventListener("keydown",(e) => {
+        if(e.keyCode === 13 && e.target.value !== ''){
+            tempenternumber += 1;
+            //alert(document.getElementById("InputEnterID").value);
+            homeworkName = String(document.getElementById("InputEnterID").value);//The value in input
+            InputItemArray.push(homeworkName);
+            if(tempenternumber > 1){
+                someCodeToCreateNewItem(homeworkName);
+            }
+            else{
+                footerFunction();
+                someCodeToCreateNewItem(homeworkName);
+            }
+            document.getElementById("InputEnterID").value = "";
+            document.getElementById("leftNumber").innerHTML = (InputItemArray.length-CompleteHW.length) + " left";
+            
+        }
+    })
+}
+
 //Add the homeworks that make sure they are completed or not 
 function someCodeToCreateNewItem(homeworkName){
 
@@ -49,33 +76,37 @@ function someCodeToCreateNewItem(homeworkName){
     
 }
 
-//Input the homework name set them into the number of leaved and the row
-function InputNameandNumber(){
-    const input = document.querySelector(".todo-app__input");
-    
-    var homeworkName;
-    //document.getElementById("leftNumber").innerHTML = "0 left";
-    let tempenternumber = 0;
-    input.addEventListener("keydown",(e) => {
-        if(e.keyCode === 13 && e.target.value !== ''){
-            tempenternumber += 1;
-            //alert(document.getElementById("InputEnterID").value);
-            homeworkName = String(document.getElementById("InputEnterID").value);//The value in input
-            InputItemArray.push(homeworkName);
-            if(tempenternumber > 1){
-                someCodeToCreateNewItem(homeworkName);
+//Finish the homework
+function someFuncToHandleOnClick(countcd){
+    let checkBox = document.getElementById(countcd);
+    let countcdh1 = countcd + "h1";
+    let h1Text = document.getElementById(countcdh1);
+
+
+    if(checkBox.checked == true){
+        const InputItemArrayPlem = [...InputItemArray];//copy from var "InputItemArray" to constant "InputItemArrayPlem"
+        //NoCompleteHW = InputItemArray;
+        CompleteHW.push(countcd);
+        document.getElementById("leftNumber").innerHTML = (InputItemArray.length-CompleteHW.length) + " left";
+        //Check the "Completed HW" and "Non Completed HW" with the array
+        for(let i = 0; i < InputItemArrayPlem.length; i++){
+            for(let j = 0; j<CompleteHW.length; j++){
+                if(CompleteHW[j] === InputItemArrayPlem[i]){
+                    InputItemArrayPlem.splice(i,1);
+                }
             }
-            else{
-                footerFunction();
-                someCodeToCreateNewItem(homeworkName);
-            }
-            document.getElementById("InputEnterID").value = "";
-            document.getElementById("leftNumber").innerHTML = (InputItemArray.length-CompleteHW.length) + " left";
-            
         }
-    })
+        NoCompleteHW = InputItemArrayPlem;
+        //If the checkBox is checked, line through the checkBox;
+        h1Text.style.textDecoration = "line-through";
+    }else{
+        document.getElementById("leftNumber").innerHTML = ((InputItemArray.length-CompleteHW.length) + 1) + " left";
+        h1Text.style.textDecoration = "none"
+    }
+  
 }
 
+//Footer with some buttons
 function footerFunction(){
     const footerCreate = document.createElement("FOOTER");
     footerCreate.setAttribute("class","todo-app__footer");
@@ -90,55 +121,14 @@ function footerFunction(){
     footerCreate.appendChild(todoapp_view_button);
     footerCreate.appendChild(todoapp_clean);
     document.querySelector(".todo-app__root").appendChild(footerCreate);
+    //All, Active, Completed three button;
     All_Active_Completed();
+
+    //Clean Completed HW button
     CleanCompleteFunction();
     
 }
 
-function CleanCompleteFunction(){
-    const ClearCompleteText = document.createTextNode("Clear Complete")
-    const ClearComplete = document.createElement("BUTTON");
-    ClearComplete.appendChild(ClearCompleteText);
-    ClearComplete.addEventListener("click",() => {
-        deleteCompleteHomework();
-    },false);
-    document.querySelector(".todo-app__clean").appendChild(ClearComplete);
-}
-//Finish the homework
-function someFuncToHandleOnClick(countcd){
-    let checkBox = document.getElementById(countcd);
-    let countcdh1 = countcd + "h1";
-    let h1Text = document.getElementById(countcdh1);
-
-    if(checkBox.checked == true){
-        const InputItemArrayPlem = [...InputItemArray];//copy from var "InputItemArray" to constant "InputItemArrayPlem"
-        //NoCompleteHW = InputItemArray;
-        CompleteHW.push(countcd);
-        document.getElementById("leftNumber").innerHTML = (InputItemArray.length-CompleteHW.length) + " left";
-        for(let i = 0; i < InputItemArrayPlem.length; i++){
-            for(let j = 0; j<CompleteHW.length; j++){
-                if(CompleteHW[j] === InputItemArrayPlem[i]){
-                    InputItemArrayPlem.splice(i,1);
-                }
-            }
-        }
-        NoCompleteHW = InputItemArrayPlem;
-        //h1homework.setAttribute("class","todo-app__item-detail");
-        //let h1Text = document.getElementById(countcdh1);
-        h1Text.style.textDecoration = "line-through";
-    }else{
-        document.getElementById("leftNumber").innerHTML = ((InputItemArray.length-CompleteHW.length) + 1) + " left";
-        h1Text.style.textDecoration = "none"
-    }
-  
-}
-function TestNumber(){
-    //alert("Tot: " + InputItemArray.length + ",Complete: " + CompleteHW.length + ",NotComplete " + NoComplete.length);
-    alert("Tot: " + InputItemArray.length + ",Complete: " + CompleteHW.length + ",NoComplete: " + NoCompleteHW.length);
-    /*for(let i = 0; i < NoCompleteHW.length;i++){
-        alert(NoCompleteHW[i]);
-    }*/
-}
 
 function AllShow(){
 
@@ -148,19 +138,11 @@ function AllShow(){
     let AllHWLI = [...InputItemArray];
     let AllHWConst = [...InputItemArray];
 
-    /*
-    let AllHWLI = document.createElement("LI");
-    AllHWLI.setAttribute("class","todo-app__item");
-    AllHWLI.style.display = "none";
-    AllUL.appendChild(AllHWLI);
-    document.querySelector(".todo-app__main").appendChild(AllUL);
-    */
+
 
     
     for(let i = 0; i < AllHWLI.length; i++){
         AllHWConst[i] = AllHWLI[i] + "Item";
-        //AllHWLI[i] = document.createElement("LI");
-        //AllHWLI[i].setAttribute("id",AllHWConst[i]);
         
     }
     var all;
@@ -176,47 +158,25 @@ function AllShow(){
 function ActiveShow(){
     const ActiveUL = document.createElement("UL");
     ActiveUL.setAttribute("class","todo-app__Active");
-    let CompleteHWLI = [...CompleteHW];// copy "CompleteHW" to "CompleteHWLI" array to preare to clear the complele homework
-    let NoCompleteHWLI = [...NoCompleteHW];
-    let CompleteConst = [...CompleteHW];
-    let NoCompleteConst = [...NoCompleteHW];
+    let CompleteHWLI = [...CompleteHW]; // copy "CompleteHW" to "CompleteHWLI" array to preare to clear the complele homework
+    let NoCompleteHWLI = [...NoCompleteHW]; //copy "NoCompleteHW" to "CompleteHWLI"
+    let CompleteConst = [...CompleteHW]; //Copy "CompleteHW" to "CompleteConst"
+    let NoCompleteConst = [...NoCompleteHW]; //Copy "NoCompleteHW" to "CompleteConst"
     for(let i = 0; i < CompleteHWLI.length; i++){
-        //CompleteHWLI[i] = CompleteHWLI[i] + "Active";
-        
-        
         CompleteConst[i] = CompleteHWLI[i] + "Item";
-        //CompleteHWLI[i] = document.createElement("LI");
-        //CompleteHWLI[i].setAttribute("id",CompleteConst[i]);
-        
-        //CompleteHWLI[i] = document.createElement("LI");
-        //CompleteHWLI[i].setAttribute("id",CompleteConst[i]);
-        
-        //CompleteHWLI[i].setAttribute("id",CompleteHWLIConst);
-        //alert(CompleteHWLIConst);
     }
     
     
     for(let i = 0; i < NoCompleteHWLI.length; i++){
         NoCompleteConst[i] = NoCompleteHWLI[i] + "Item";
-        //NoCompleteHWLI[i] = document.createElement("LI");
-        //NoCompleteHWLI[i].setAttribute("id",NoCompleteConst[i]);
-        
-        //NoCompleteHWLI[i] = document.createElement("LI");
-        //NoCompleteHWLI[i].setAttribute("id",NoCompleteConst[i]);
+    }    
 
-    }
-    
-    //alert("Test");
-    
-    
-    
     let cp;
     var ncp;
     
     
     for(let i = 0; i < CompleteHWLI.length;i++){
         cp = document.getElementById(CompleteConst[i]);
-        //cp.remove();
         cp.style.display = "none";
     }
     
@@ -226,7 +186,6 @@ function ActiveShow(){
         ncp = document.getElementById(NoCompleteConst[i]);
         ncp.style.display = "flex";
         ActiveUL.appendChild(ncp);
-        //alert(CompleteConst[i]);
     }
 
     document.querySelector(".todo-app__main").appendChild(ActiveUL);
@@ -241,6 +200,7 @@ function CompleteShow(){
     let NoCompleteHWLI = [...NoCompleteHW];
     let CompleteConst = [...CompleteHW];
     let NoCompleteConst = [...NoCompleteHW];
+    
     /*if(CompleteConst.length === 0){
         /*
         CompleteHWLI = document.createElement("LI");
@@ -257,15 +217,13 @@ function CompleteShow(){
     }else{}*/
     for(let i = 0; i < CompleteHWLI.length; i++){
         CompleteConst[i] = CompleteHWLI[i] + "Item";
-        //CompleteHWLI[i] = document.createElement("LI");
-        //CompleteHWLI[i].setAttribute("id",CompleteConst[i]);
+
     }
     
     
     for(let i = 0; i < NoCompleteHWLI.length; i++){
         NoCompleteConst[i] = NoCompleteHWLI[i] + "Item";
-        //NoCompleteHWLI[i] = document.createElement("LI");
-        //NoCompleteHWLI[i].setAttribute("id",NoCompleteConst[i]);
+
 
     }
     
@@ -274,9 +232,7 @@ function CompleteShow(){
     var ncp;
     
     for(let i = 0; i < NoCompleteConst.length;i++){
-        //alert(NoCompleteConst[i]);
         ncp = document.getElementById(NoCompleteConst[i]);
-        //ncp.remove(); 
         ncp.style.display = "none";  
     }
     
@@ -291,10 +247,12 @@ function CompleteShow(){
     document.querySelector(".todo-app__main").appendChild(CompleteUL);
 
 }
+
+//Delete the list of already completed homework
 function deleteCompleteHomework(){
 
-    let CompleteHWLI = [...CompleteHW];// copy "CompleteHW" to "CompleteHWLI" array to preare to clear the complele homework
-    let CompleteHWConst = [...CompleteHW];
+    let CompleteHWLI = [...CompleteHW]; // copy "CompleteHW" to "CompleteHWLI" array to preare to clear the complele homework
+    let CompleteHWConst = [...CompleteHW]; // copy "CompleteHW" to "CompleteHWConst"
     for(let i = 0; i < CompleteHWLI.length; i++){
         CompleteHWLI[i] = CompleteHWLI[i] + "Item"; //The name with "li" in function "someCodeToCreateNewItem"
     }
@@ -304,8 +262,17 @@ function deleteCompleteHomework(){
         el.remove();// remove "li"
         InputItemArray = InputItemArray.filter(e => e!==CompleteHWConst[i]);
         CompleteHW = CompleteHW.filter(e => e!== CompleteHWConst[i]);
-        //el.style.display = "none";
     }
+}
+
+function CleanCompleteFunction(){
+    const ClearCompleteText = document.createTextNode("Clear Complete")
+    const ClearComplete = document.createElement("BUTTON");
+    ClearComplete.appendChild(ClearCompleteText);
+    ClearComplete.addEventListener("click",() => {
+        deleteCompleteHomework();
+    },false);
+    document.querySelector(".todo-app__clean").appendChild(ClearComplete);
 }
 
 function All_Active_Completed(){
@@ -346,10 +313,3 @@ function All_Active_Completed(){
     document.querySelector(".todo-app__view-buttons").appendChild(CompleteLI);
 }
 
-/*
-function CanceltheDot(){
-    return this.parentElement.remove();
-    //alert("Test");
-    //InputItemArray = InputItemArray.
-
-}*/
